@@ -1,0 +1,46 @@
+version: '3'
+services:
+    proxy:
+        privileged: true
+        environment:
+            - TZ=America/Sao_Paulo
+            - container=docker
+            - VIDEO_GID=44
+        volumes:
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro    
+            - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        ports:
+            - '1978:22'
+            - '80:80'
+            - '5000:5000'
+            - '2086:2086'
+        image: proxy
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
+
+        networks:
+          network:
+            ipv4_address: 172.21.0.2
+        deploy:
+          resources:
+            limits:
+              cpus: "0.1"
+              memory: '512m'
+        build:
+          context: .
+          dockerfile: ./Dockerfile
+          shm_size: '4gb'
+        shm_size: '4gb'
+
+networks:
+  network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+          gateway: 172.21.0.1
+          #volumes:
+          #/media/Data/hallo:
+          #storage_opt:
+          #size: '2048G'          
