@@ -1,6 +1,7 @@
 version: '3'
 services:
     proxy:
+        restart: always
         privileged: true
         environment:
             - TZ=America/Sao_Paulo
