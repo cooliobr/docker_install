@@ -11,11 +11,14 @@ services:
             - /etc/timezone:/etc/timezone:ro
             - /etc/localtime:/etc/localtime:ro    
             - /sys/fs/cgroup:/sys/fs/cgroup:ro
+            - /opt/ssl:/opt/ssl:ro
+            - /opt/conf:/opt/conf:ro
         ports:
             - '1978:22'
             - '80:80'
             - '5000:5000'
             - '2086:2086'
+            - '443:443'
         image: proxy
         stdin_open: true # docker run -i
         tty: true        # docker run -t
