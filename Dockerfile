@@ -40,7 +40,7 @@ RUN curl 'https://raw.githubusercontent.com/cooliobr/ffplayout-nv/main/nginx.con
 RUN touch /etc/nginx/upstream_local.conf
 RUN touch /etc/nginx/block1.conf
 RUN echo 'server 200.194.238.228:2086;' > /etc/nginx/upstream.conf
-RUN mkdir -p /usr/share/nginx/logs/ && mkdir -p /opt/nginx/ && mkdir /var/www/ && mkdir -p /usr/share/nginx/logs/
+RUN mkdir -p /usr/share/nginx/logs/ && mkdir -p /opt/nginx/ && mkdir /var/www/ && mkdir -p /usr/share/nginx/logs/ && mkdir /opt/ssl && mkdir /opt/conf
 RUN chmod 777 /usr/share/nginx/logs/ /opt/nginx/ /var/www/ /usr/share/nginx/logs/
 RUN systemctl enable nginx
 EXPOSE 8787
