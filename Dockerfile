@@ -34,7 +34,7 @@ RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 RUN echo 'Docker!' | passwd --stdin root
 RUN \
     yum update -y \
-    && yum install -y dejavu-sans-fonts sudo wget htop nvtop nginx psmisc certbot
+    && yum install -y dejavu-sans-fonts sudo wget htop nvtop nginx psmisc certbot python-certbot-nginx
 
 RUN curl 'https://raw.githubusercontent.com/cooliobr/ffplayout-nv/main/nginx.conf' | sed 's/\/opt\/nginx\/conf\//\/etc\/nginx\//g' > /etc/nginx/nginx.conf
 RUN touch /etc/nginx/upstream_local.conf
