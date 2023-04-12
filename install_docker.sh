@@ -7,3 +7,4 @@
    ls -l /usr/local/bin/docker-compose && chmod 755 /usr/local/bin/docker-compose
    /usr/local/bin/docker-compose -v
    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+   mkdir /opt/ssl && mkdir /opt/conf && chmod 755 /opt/ssl && chmod 755 /opt/conf
