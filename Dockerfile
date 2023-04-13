@@ -32,10 +32,10 @@ rm -f /lib/systemd/system/anaconda.target.wants/*;
 RUN yum -y install net-tools openssh-server
 RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config 
 RUN echo 'Docker!' | passwd --stdin root
-RUN yum -y install https://extras.getpagespeed.com/release-latest.rpm
+#RUN yum -y install https://extras.getpagespeed.com/release-latest.rpm
 RUN \
     yum update -y \
-    && yum install -y dejavu-sans-fonts sudo wget htop nvtop nginx nginx-module-rtmp psmisc certbot python-certbot-nginx
+    && yum install -y dejavu-sans-fonts sudo wget htop nvtop nginx psmisc certbot python-certbot-nginx
 
 RUN curl 'https://raw.githubusercontent.com/cooliobr/ffplayout-nv/main/nginx.conf' | sed 's/\/opt\/nginx\/conf\//\/etc\/nginx\//g' > /etc/nginx/nginx.conf
 RUN touch /etc/nginx/upstream_local.conf
