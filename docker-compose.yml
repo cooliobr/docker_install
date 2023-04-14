@@ -19,6 +19,7 @@ services:
             - '5000:5000'
             - '2086:2086'
             - '443:443'
+            - '1935:1935'
         image: proxy
         stdin_open: true # docker run -i
         tty: true        # docker run -t
