@@ -4,7 +4,7 @@ ENV container docker
 RUN yum --enablerepo=extras install -y epel-release
 RUN yum -y install libgomp && \
     yum clean all
-
+ENV SERVER=200.194.238.228:2086
 RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
     systemd-tmpfiles-setup.service ] || rm -f $i; done); \
     rm -f /lib/systemd/system/multi-user.target.wants/*; \
@@ -37,10 +37,10 @@ RUN \
     yum update -y \
     && yum install -y dejavu-sans-fonts sudo wget htop nvtop nginx psmisc certbot python-certbot-nginx
 
-RUN curl 'https://raw.githubusercontent.com/cooliobr/ffplayout-nv/main/nginx.conf' | sed 's/\/opt\/nginx\/conf\//\/etc\/nginx\//g' > /etc/nginx/nginx.conf
+##RUN curl 'https://raw.githubusercontent.com/cooliobr/ffplayout-nv/main/nginx.conf' | sed 's/\/opt\/nginx\/conf\//\/etc\/nginx\//g' > /etc/nginx/nginx.conf
 RUN touch /etc/nginx/upstream_local.conf
 RUN touch /etc/nginx/block1.conf
-RUN echo 'server 200.194.238.228:2086;' > /etc/nginx/upstream.conf
+RUN echo 'server $SERVER;' > /etc/nginx/upstream.conf
 RUN yum install pcre pcre-devel openssl openssl-devel zlib zlib-devel unzip libxml2-devel libxslt-devel gd-devel perl perl-devel perl-ExtUtils-Embed gperftools -y
 RUN yum groupinstall 'Development Tools' -y
 RUN mkdir ~/working
@@ -55,7 +55,7 @@ RUN ./configure --prefix=/usr/share/nginx --sbin-path=/usr/sbin/nginx --modules-
 RUN make -j5
 RUN make install
 COPY ./rtmp.conf /etc/nginx/rtmp.conf
-
+COPY ./nginx.conf /etc/nginx/nginx.conf
 RUN mkdir -p /usr/share/nginx/logs/ && mkdir -p /opt/nginx/ && mkdir /var/www/ && mkdir -p /usr/share/nginx/logs/ && mkdir /opt/ssl && mkdir /opt/conf
 RUN chmod 777 /usr/share/nginx/logs/ /opt/nginx/ /var/www/ /usr/share/nginx/logs/
 RUN systemctl enable nginx
