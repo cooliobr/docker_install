@@ -63,6 +63,8 @@ EXPOSE 8787
 EXPOSE 1935
 EXPOSE 80
 EXPOSE 88
+EXPOSE 2086
+EXPOSE 5000
 
 VOLUME [ "/sys/fs/cgroup", "/tmp", "/run", "/run/lock" ]
 
