@@ -4,7 +4,7 @@ ENV container docker
 RUN yum --enablerepo=extras install -y epel-release
 RUN yum -y install libgomp && \
     yum clean all
-ENV SERVER=200.194.238.228:2086
+
 RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
     systemd-tmpfiles-setup.service ] || rm -f $i; done); \
     rm -f /lib/systemd/system/multi-user.target.wants/*; \
