@@ -40,7 +40,10 @@ RUN \
 ##RUN curl 'https://raw.githubusercontent.com/cooliobr/ffplayout-nv/main/nginx.conf' | sed 's/\/opt\/nginx\/conf\//\/etc\/nginx\//g' > /etc/nginx/nginx.conf
 RUN touch /etc/nginx/upstream_local.conf
 RUN touch /etc/nginx/block1.conf
-RUN echo 'server $SERVER;' > /etc/nginx/upstream.conf
+#####    server first_server_ip weight=5;
+#####    server second_server_ip weight=1;
+RUN echo 'server $SERVER weight=5;' > /etc/nginx/upstream.conf
+RUN echo 'server $SERVER weight=1;' >> /etc/nginx/upstream.conf
 RUN yum install pcre pcre-devel openssl openssl-devel zlib zlib-devel unzip libxml2-devel libxslt-devel gd-devel perl perl-devel perl-ExtUtils-Embed gperftools -y
 RUN yum groupinstall 'Development Tools' -y
 RUN mkdir ~/working
