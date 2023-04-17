@@ -82,6 +82,6 @@ EXPOSE 2086
 EXPOSE 5000
 EXPOSE 443
 
-VOLUME [ "/sys/fs/cgroup", "/tmp", "/run", "/run/lock", "/opt/config" ]
+VOLUME [ "/sys/fs/cgroup", "/tmp", "/run", "/run/lock", "/opt/conf" ]
 
 CMD ["/usr/sbin/init"]
