@@ -35,7 +35,7 @@ RUN echo 'Docker!' | passwd --stdin root
 #RUN yum -y install https://extras.getpagespeed.com/release-latest.rpm
 RUN \
     yum update -y \
-    && yum install -y dejavu-sans-fonts sudo wget htop nvtop nginx psmisc certbot python-certbot-nginx
+    && yum install -y dejavu-sans-fonts sudo wget htop nvtop nginx psmisc certbot python-certbot-nginx cronie
 
 ##RUN curl 'https://raw.githubusercontent.com/cooliobr/ffplayout-nv/main/nginx.conf' | sed 's/\/opt\/nginx\/conf\//\/etc\/nginx\//g' > /etc/nginx/nginx.conf
 RUN touch /etc/nginx/upstream_local.conf
@@ -66,6 +66,11 @@ RUN cd nginx-1.20.1 && ./configure --prefix=/usr/share/nginx --sbin-path=/usr/sb
 
 COPY ./rtmp.conf /etc/nginx/rtmp.conf
 COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./flussonic.sh /etc/nginx/flussonic.sh
+RUN chmod 755 /etc/nginx/flussonic.sh
+RUN touch /etc/nginx/encoder_list.txt
+RUN ln -s /etc/nginx/encoder_list.txt /opt/config/encoder_list.txt
+RUN ( crontab -l ; echo "*/1 * * * * /etc/nginx/flussonic.sh" ) | crontab -
 RUN mkdir -p /usr/share/nginx/logs/ && mkdir -p /opt/nginx/ && mkdir /var/www/ && mkdir -p /usr/share/nginx/logs/ && mkdir /opt/ssl && mkdir /opt/conf
 RUN chmod 777 /usr/share/nginx/logs/ /opt/nginx/ /var/www/ /usr/share/nginx/logs/
 RUN systemctl enable nginx
@@ -75,7 +80,8 @@ EXPOSE 80
 EXPOSE 88
 EXPOSE 2086
 EXPOSE 5000
+EXPOSE 443
 
-VOLUME [ "/sys/fs/cgroup", "/tmp", "/run", "/run/lock" ]
+VOLUME [ "/sys/fs/cgroup", "/tmp", "/run", "/run/lock", "/opt/config" ]
 
 CMD ["/usr/sbin/init"]
