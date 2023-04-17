@@ -11,8 +11,8 @@ services:
             - /etc/timezone:/etc/timezone:ro
             - /etc/localtime:/etc/localtime:ro    
             - /sys/fs/cgroup:/sys/fs/cgroup:ro
-            - /opt/ssl:/opt/ssl:ro
-            - /opt/conf:/opt/conf:ro
+            - /opt/ssl:/opt/ssl:rw
+            - /opt/conf:/opt/conf:rw
         ports:
             - '1978:22'
             - '80:80'
