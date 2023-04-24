@@ -1,0 +1,32 @@
+version: "2.1"
+services:
+  tvheadend:
+          ### docker-compose -f docker-compose-tvh.yml up
+    image: lscr.io/linuxserver/tvheadend:release-4.2
+    container_name: tvheadend
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Sao_Paulo
+      - RUN_OPTS= #optional
+    volumes:
+      - /usr/local/src/docker_install/config:/config
+      - /usr/local/src/docker_install/data:/recordings
+    ports:
+      - 9981:9981
+      - 9982:9982
+    devices:
+            #- /dev/dri:/dev/dri #optional
+      - /dev/dvb:/dev/dvb #optional
+    restart: unless-stopped
+    networks:
+      network:
+        ipv4_address: 172.210.0.2
+
+networks:
+  network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.210.0.0/16
+          gateway: 172.210.0.1        
