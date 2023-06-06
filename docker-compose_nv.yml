@@ -1,0 +1,45 @@
+version: '3.3'
+services:
+    playout:
+        devices:
+            - /dev/nvidia-caps
+            - /dev/nvidia0
+            - /dev/nvidiactl
+            - /dev/nvidia-modeset
+            - /dev/nvidia-uvm
+            - /dev/nvidia-uvm-tools
+        volumes:
+            - /sys/fs/cgroup:/sys/fs/cgroup:ro
+            - ./volumes_etc:/etc/ffplayout:rw
+            - ./volumes_db:/usr/share/ffplayout:rw
+            - ./volumes_lib:/var/lib/ffplayout:rw
+        ports:
+            - '8787:8787'
+            - '222:22'
+        privileged: true
+        restart: always
+        image: ffmpeg-nvidia
+        networks:
+          network:
+            ipv4_address: 172.21.0.2
+        deploy:
+          resources:
+            limits:
+              cpus: "8"
+              memory: '16gb'
+        environment:
+            - NVIDIA_VISIBLE_DEVICES=all
+            - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+        command:
+            - '/usr/sbin/init'
+networks:
+  network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+          gateway: 172.21.0.1
+          #volumes:
+          #/media/Data/hallo:
+          #storage_opt:
+          #size: '2048G'              
