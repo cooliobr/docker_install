@@ -35,19 +35,31 @@ RUN echo 'Docker!' | passwd --stdin root
 #RUN yum -y install https://extras.getpagespeed.com/release-latest.rpm
 RUN \
     yum update -y \
-    && yum install -y dejavu-sans-fonts sudo wget htop nvtop nginx psmisc certbot python-certbot-nginx
+    && yum install -y dejavu-sans-fonts sudo wget htop nvtop
 
 ##RUN curl 'https://raw.githubusercontent.com/cooliobr/ffplayout-nv/main/nginx.conf' | sed 's/\/opt\/nginx\/conf\//\/etc\/nginx\//g' > /etc/nginx/nginx.conf
-RUN touch /etc/nginx/upstream_local.conf
-RUN touch /etc/nginx/block1.conf
-RUN echo 'server $SERVER;' > /etc/nginx/upstream.conf
-RUN yum install pcre pcre-devel openssl openssl-devel zlib zlib-devel unzip libxml2-devel libxslt-devel gd-devel perl perl-devel perl-ExtUtils-Embed gperftools -y
 RUN yum groupinstall 'Development Tools' -y
-COPY ./rtmp.conf /etc/nginx/rtmp.conf
-COPY ./nginx.conf /etc/nginx/nginx.conf
-RUN mkdir -p /usr/share/nginx/logs/ && mkdir -p /opt/nginx/ && mkdir /var/www/ && mkdir -p /usr/share/nginx/logs/ && mkdir /opt/ssl && mkdir /opt/conf
-RUN chmod 777 /usr/share/nginx/logs/ /opt/nginx/ /var/www/ /usr/share/nginx/logs/
-RUN systemctl enable nginx
+RUN mkdir ~/working && \
+cd ~/working && \
+wget http://nginx.org/download/nginx-1.9.7.tar.gz && \
+wget https://github.com/arut/nginx-rtmp-module/archive/master.zip && \
+yum install pcre pcre-devel openssl openssl-devel zlib zlib-devel geoip-devel -y && \
+yum install unzip libxml2-devel libxslt-devel gd-devel perl-ExtUtils-Embed -y && \
+tar -xvf nginx-1.9.7.tar.gz && \
+unzip master.zip && \
+git clone https://github.com/yaoweibin/ngx_http_substitutions_filter_module.git && \
+cd nginx-1.9.7 && \
+./configure --add-module=../nginx-rtmp-module-master/ --prefix=/opt/nginx --conf-path=/opt/nginx/conf/nginx.conf --http-log-path=/opt/nginx/logs/access.log --error-log-path=/opt/nginx/logs/error.log --lock-path=/var/lock/nginx.lock --pid-path=/opt/nginx/nginx.pid --http-client-body-temp-path=/var/lib/nginx/body --http-fastcgi-temp-path=/var/lib/nginx/fastcgi --http-proxy-temp-path=/var/lib/nginx/proxy --http-scgi-temp-path=/var/lib/nginx/scgi --http-uwsgi-temp-path=/var/lib/nginx/uwsgi --with-file-aio &&\
+make  && \
+make install && \
+mkdir -p /var/lib/nginx/body && \
+mkdir -p /var/www  && \
+mkdir -p /usr/local/nginx/html/live/ && \
+touch /opt/nginx/conf/block1.conf
+COPY ./nginx.service /usr/lib/systemd/system/nginx.service
+RUN systemctl enable nginx.service
+
+#RUN systemctl enable nginx
 EXPOSE 8787
 EXPOSE 1935
 EXPOSE 80
