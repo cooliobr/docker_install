@@ -32,11 +32,11 @@ services:
             limits:
               cpus: "8"
               memory: '16gb'
-        build:
-          context: .
-          dockerfile: ./Dockerfile
-          shm_size: '24gb'
-        shm_size: '24gb'
+        #build:
+        #  context: .
+        #  dockerfile: ./Dockerfile
+        #  shm_size: '24gb'
+        #shm_size: '24gb'
 
 networks:
   network:
