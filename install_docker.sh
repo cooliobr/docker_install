@@ -8,3 +8,20 @@
    /usr/local/bin/docker-compose -v
    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
    mkdir /opt/ssl && mkdir /opt/conf && chmod 755 /opt/ssl && chmod 755 /opt/conf
+   distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+      && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+      && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | \
+            sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+            sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+apt-get update
+apt-get install -y nvidia-container-toolkit
+mkdir -p /etc/systemd/system/docker.service.d
+tee /etc/systemd/system/docker.service.d/override.conf <<EOF
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd --host=fd:// --add-runtime=nvidia=/usr/bin/nvidia-container-runtime
+EOF
+systemctl daemon-reload \
+  && sudo systemctl restart docker
+nvidia-ctk runtime configure --runtime=docker --set-as-default
+systemctl restart docker
