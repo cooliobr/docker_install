@@ -23,5 +23,6 @@ ExecStart=/usr/bin/dockerd --host=fd:// --add-runtime=nvidia=/usr/bin/nvidia-con
 EOF
 systemctl daemon-reload \
   && sudo systemctl restart docker
+  nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 nvidia-ctk runtime configure --runtime=docker --set-as-default
 systemctl restart docker
