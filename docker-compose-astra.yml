@@ -7,6 +7,19 @@ services:
             - TZ=America/Sao_Paulo
             - container=docker
             - VIDEO_GID=44
+            - NVIDIA_VISIBLE_DEVICES=all
+            - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+        cap_add:
+            - SYS_ADMIN              
+        devices:
+            - /dev/nvidia-caps
+            - /dev/nvidia0
+            - /dev/nvidiactl
+            - /dev/nvidia-modeset
+            - /dev/nvidia-uvm
+            - /dev/nvidia-uvm-tools
+            - '/dev/dri/card0:/dev/dri/card0'
+            - '/dev/dri/renderD128:/dev/dri/renderD128'              
         volumes:
             - /etc/timezone:/etc/timezone:ro
             - /etc/localtime:/etc/localtime:ro    
@@ -20,7 +33,8 @@ services:
             - '22086:2086'
             - '2443:443'
             - '21935:1935'
-        image: cooliobr/astra:v1
+        image: cooliobr/encoder:v0.2
+        #image: cooliobr/astra:v1
         stdin_open: true # docker run -i
         tty: true        # docker run -t
 
@@ -30,8 +44,8 @@ services:
         deploy:
           resources:
             limits:
-              cpus: "8"
-              memory: '16gb'
+              cpus: "2"
+              memory: '6gb'
         #build:
         #  context: .
         #  dockerfile: ./Dockerfile
