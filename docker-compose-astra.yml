@@ -33,13 +33,15 @@ services:
             - '22086:2086'
             - '2443:443'
             - '21935:1935'
-        image: cooliobr/encoder:v0.2
+        image: cooliobr/encoder:v0.3
         #image: cooliobr/astra:v1
         stdin_open: true # docker run -i
         tty: true        # docker run -t
 
         networks:
-          network:
+             network:
+             ipam:
+              driver: default
             ipv4_address: 172.22.0.2
         deploy:
           resources:
