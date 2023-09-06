@@ -37,11 +37,8 @@ services:
         #image: cooliobr/astra:v1
         stdin_open: true # docker run -i
         tty: true        # docker run -t
-
         networks:
-             network:
-             ipam:
-              driver: default
+          network:
             ipv4_address: 172.22.0.2
         deploy:
           resources:
