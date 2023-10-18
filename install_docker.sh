@@ -21,6 +21,21 @@ tee /etc/systemd/system/docker.service.d/override.conf <<EOF
 ExecStart=
 ExecStart=/usr/bin/dockerd --host=fd:// --add-runtime=nvidia=/usr/bin/nvidia-container-runtime
 EOF
+tee /etc/systemd/system/astra.service <<EOF
+[Unit]
+Description=Astra Relay Service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/src/astra-4/astra --relay
+Restart=always
+User=root
+# Substitua 'seu_usuario' pelo nome de usuário que executará o serviço
+WorkingDirectory=/usr/local/src/astra-4/
+
+[Install]
+WantedBy=multi-user.target
+EOF
 systemctl daemon-reload \
   && sudo systemctl restart docker
   nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
