@@ -1,4 +1,7 @@
    #!/bin/bash
+   wget https://developer.download.nvidia.com/compute/cuda/12.2.2/local_installers/cuda_12.2.2_535.104.05_linux.run
+   chmod 755 cuda_12.2.2_535.104.05_linux.run
+   ./cuda_12.2.2_535.104.05_linux.run --override --driver --toolkit --silent
    curl -fsSL https://get.docker.com -o get-docker.sh
    sh get-docker.sh
    VERSION=$(curl --silent https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K.*\d')
