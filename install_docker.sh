@@ -51,7 +51,10 @@ systemctl daemon-reload \
   nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 nvidia-ctk runtime configure --runtime=docker --set-as-default
 systemctl restart docker
+cd /usr/local/src/
 git clone https://github.com/cesbo/astra-4
 cd astra-4 
 ./configure.sh
 make && make install && systemctl restart astra
+cd /usr/local/src/
+wget https://raw.githubusercontent.com/keylase/nvidia-patch/master/patch.sh && chmod 755 patch.sh && ./patch.sh
