@@ -55,6 +55,6 @@ cd /usr/local/src/
 git clone https://github.com/cesbo/astra-4
 cd astra-4 
 ./configure.sh
-make && make install && systemctl restart astra
+make && make install && systemctl enable astra && systemctl restart astra && systemctl start astra
 cd /usr/local/src/
 wget https://raw.githubusercontent.com/keylase/nvidia-patch/master/patch.sh && chmod 755 patch.sh && ./patch.sh
