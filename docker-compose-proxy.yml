@@ -1,0 +1,45 @@
+version: '3'
+services:
+    proxy:
+        restart: always
+        privileged: true
+        environment:
+            - TZ=America/Sao_Paulo
+            - container=docker
+            - VIDEO_GID=44
+            - NVIDIA_VISIBLE_DEVICES=all
+            - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+        cap_add:
+            - SYS_ADMIN              
+        volumes:
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro    
+            - /sys/fs/cgroup:/sys/fs/cgroup:rw
+            - /opt/ssl:/opt/ssl:rw
+            - /opt/conf:/opt/conf:rw
+            - /dev/shm:/usr/share/nginx/live:rw
+        ports:
+            - '21978:22'
+            - '280:80'
+            - '5000:88'
+            - '2086:88'
+            - '2443:443'
+            - '21935:1935'
+            - '288:88'
+        image: cooliobr/proxy_new:01
+        #image: cooliobr/serversat:sat_origin_encoder
+        #image: cooliobr/astra:v1
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
+        #network_mode: host
+        networks:
+          network:
+            ipv4_address: 172.22.0.2
+        shm_size: '24gb'
+networks:
+  network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16
+          gateway: 172.22.0.1
