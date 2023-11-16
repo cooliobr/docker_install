@@ -1,5 +1,6 @@
    #!/bin/bash
    apt install git curl build-essential wget -y
+   rm -f /etc/systemd/system/docker.service.d/override.conf
    update-grub
    curl -fsSL https://get.docker.com -o get-docker.sh
    sh get-docker.sh
