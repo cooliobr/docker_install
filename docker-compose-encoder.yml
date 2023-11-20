@@ -34,6 +34,7 @@ services:
             - '22086:2086'
             - '2443:443'
             - '21935:1935'
+            - '80:88'
         image: cooliobr/serversat:sat01
         #image: cooliobr/astra:v1
         stdin_open: true # docker run -i
