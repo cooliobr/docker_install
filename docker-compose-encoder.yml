@@ -43,11 +43,13 @@ services:
         networks:
           network:
             ipv4_address: 172.22.0.2
-        #deploy:
-        #  resources:
-        #    limits:
-        #      cpus: "2"
-        #      memory: '6gb'
+        deploy:
+          resources:
+            reservations:
+              devices:
+                - driver: nvidia
+                  count: all
+                  capabilities: [gpu]
         #build:
         #  context: .
         #  dockerfile: ./Dockerfile
