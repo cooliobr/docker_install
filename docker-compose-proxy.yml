@@ -7,8 +7,6 @@ services:
             - TZ=America/Sao_Paulo
             - container=docker
             - VIDEO_GID=44
-            - NVIDIA_VISIBLE_DEVICES=all
-            - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
         cap_add:
             - SYS_ADMIN              
         volumes:
