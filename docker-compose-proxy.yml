@@ -24,7 +24,7 @@ services:
             - '2443:443'
             - '21935:1935'
             - '288:88'
-        image: cooliobr/proxy_new:01
+        image: cooliobr/proxy_new:02
         #image: cooliobr/serversat:sat_origin_encoder
         #image: cooliobr/astra:v1
         stdin_open: true # docker run -i
