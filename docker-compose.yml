@@ -1,29 +1,25 @@
-version: '3'
+version: '3.3'
 services:
-    proxy:
-        restart: always
-        privileged: true
-        environment:
-            - TZ=America/Sao_Paulo
-            - container=docker
-            - VIDEO_GID=44
+    playout:
+        devices:
+            - /dev/nvidia-caps
+            - /dev/nvidia0
+            - /dev/nvidiactl
+            - /dev/nvidia-modeset
+            - /dev/nvidia-uvm
+            - /dev/nvidia-uvm-tools
         volumes:
-            - /etc/timezone:/etc/timezone:ro
-            - /etc/localtime:/etc/localtime:ro    
             - /sys/fs/cgroup:/sys/fs/cgroup:ro
-            - /opt/ssl:/opt/ssl:rw
-            - /opt/conf:/opt/conf:rw
+            - /root/playout/conf:/etc/ffplayout:rw
+            - /root/playout/db:/usr/share/ffplayout/db:rw
+            - /logos/public:/usr/share/ffplayout/public:rw
+            - /var/lib/ffplayout/media1G/hmsc:/var/lib/ffplayout/tv-media:rw  
         ports:
-            - '1978:22'
-            - '80:80'
-            - '5000:5000'
-            - '2086:2086'
-            - '443:443'
-            - '1935:1935'
-        image: proxy
-        stdin_open: true # docker run -i
-        tty: true        # docker run -t
-
+            - '8181:8787'
+            - '2221:22'
+        privileged: true
+        restart: always
+        image: cooliobr/nvidia_rocklinux:8787
         networks:
           network:
             ipv4_address: 172.21.0.2
@@ -32,12 +28,12 @@ services:
             limits:
               cpus: "8"
               memory: '16gb'
-        build:
-          context: .
-          dockerfile: ./Dockerfile
-          shm_size: '24gb'
-        shm_size: '24gb'
-
+        environment:
+            - TZ=America/Sao_Paulo
+            - NVIDIA_VISIBLE_DEVICES=all
+            - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+        command:
+            - '/usr/sbin/init'
 networks:
   network:
     driver: bridge
@@ -48,4 +44,4 @@ networks:
           #volumes:
           #/media/Data/hallo:
           #storage_opt:
-          #size: '2048G'          
+          #size: '2048G'              
