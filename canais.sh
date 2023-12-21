@@ -28,5 +28,17 @@ while IFS= read -r line; do
 done <<< "$response"
 
 echo "Arquivo $output_file gerado com sucesso!"
+
+# Arquivo de serviço
+service_file="/etc/systemd/system/astra.service"
+
+# Linha a ser substituída
+old_line="ExecStart=/usr/local/src/astra-4/astra --relay"
+new_line="ExecStart=/usr/local/src/astra-4/astra /opt/conf/canais.lua --log /var/log/astra.log"
+
+# Substituir a linha usando sed
+sed -i "s|$old_line|$new_line|g" "$service_file"
+
+echo "Substituição concluída."
 systemctl daemon-reload
 systemctl restart astra
